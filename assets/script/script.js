@@ -85,7 +85,7 @@ function searchMovies(words, page) {
 
     async function getMovie() {
         let text = await translateWords();
-        SEARCH_RESULTS.innerHTML = 'Showing results for <em><strong>' + text + '</strong></em>';
+        
         const url = `https://www.omdbapi.com/?s=${text}&page=${page}&apikey=aad8de66`;
 
         const res = await fetch(url);
@@ -122,15 +122,12 @@ function searchMovies(words, page) {
             } catch (e) {
                 SEARCH_RESULTS.innerHTML = 'Request limit reached!';
             }
-
+            SEARCH_RESULTS.innerHTML = 'Showing results for <em><strong>' + text + '</strong></em>';
+        } else if (data.Error === 'Movie not found!') {
+            SEARCH_RESULTS.innerHTML = 'No results for' + text + '. Please, try another request';
         } else if (data.Response === 'False' && page === 1) {
             SEARCH_RESULTS.innerHTML = 'Request limit reached!';
-        } else if (data.Response === 'False' && data.Error === 'Request limit reached!') {
-            SEARCH_RESULTS.innerHTML = 'No results for' + text + '. Please, try another request';
-        } else {
-            console.log(data.Error + 'фильмы закончились');
-        }
-
+        } 
     }
 
     getMovie();
