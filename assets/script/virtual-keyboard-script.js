@@ -99,7 +99,8 @@ window.onload = function() {
                 if(button.innerText == 'Backspace') {
                     output = output.substr(0, output.length-1);
                 } else if(button.innerText == 'Enter') {
-                    output += '\n';
+                    // submitForm();
+                    return false;
                 } else if(button.innerText == '') {
                     output += ' ';
                 } else if(button.innerText == 'Tab') {

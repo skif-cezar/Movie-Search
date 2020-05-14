@@ -99,6 +99,17 @@ main {
     color: #F9F0DA;
 }
 
+.loading-icon {
+    display: none;
+    height: 3.5em;
+    background-image: url(../img/loading.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
 .form__search {
     position: absolute;
     top: 0;

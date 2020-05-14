@@ -95,12 +95,11 @@
     background-position: center;
     display: -webkit-box;
     display: flex;
-    background-size: contain;
+    background-size: cover;
     -webkit-transition: .3s;
     transition: .3s;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    background-image: url('../../1.jpg');
 }
 
 .slider__item__card-header {
@@ -145,12 +144,15 @@
 }
 
 .btn-link {
-    font-size: .2em;
+    font-size: .18em;
     color: black;
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
     transition: all .55s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .btn-link:hover {

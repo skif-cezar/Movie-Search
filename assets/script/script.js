@@ -6,123 +6,146 @@ const CANCEL_BTN = document.querySelector('.form__cancel');
 const TEXT_INPUT = document.querySelector('.form__text');
 const SEARCH_BTN_ICON = document.querySelector('.form__search-icon');
 const SEARCH_BTN = document.querySelector('.form__search');
+const SEARCH_RESULTS = document.querySelector('.container__message-container__message');
 const POSTS_CONTAINER = document.querySelector('.slider__wrapper');
+const SLIDER_ITEM = document.querySelectorAll('.slider__item');
+const ITEM_CARD = document.querySelectorAll('.slider__item__card');
+const CARD_IMAGE = document.querySelectorAll('.slider__item__card-image');
+const CARD_HEADER = document.querySelectorAll('.slider__item__card-header');
+const MOVIE_TITLE = document.querySelectorAll('.btn-link');
+const IMDB_RAITING = document.querySelectorAll('.imdb-rating');
+const MOVIE_YEAR = document.querySelectorAll('.year');
 
 VIRTUAL_KEYBOARD.addEventListener('click', () => {
-    if(CONTAINER_VK.classList.value != 'form__virtual-keyboard show animation-show') {
-    CONTAINER_VK.classList.add('show');
-    setTimeout(function() {
-        CONTAINER_VK.classList.add('animation-show');
-    }, 20);
+    if (CONTAINER_VK.classList.value != 'form__virtual-keyboard show animation-show') {
+        CONTAINER_VK.classList.add('show');
+        setTimeout(function () {
+            CONTAINER_VK.classList.add('animation-show');
+        }, 20);
     } else {
         CONTAINER_VK.classList.remove('animation-show');
-        setTimeout(function() {
+        setTimeout(function () {
             CONTAINER_VK.classList.remove('show');
         }, 600);
     }
+    TEXT_INPUT.focus();
 });
+
+TEXT_INPUT.addEventListener('keydown', (event) => {
+    if(event.keyCode === 13) {
+        event.preventDefault();
+
+        submitForm();
+    } else {
+        return false;
+    }
+})
+
+CONTAINER_VK.addEventListener('mousedown', (event) => {
+    if(event.keyCode === 13) {
+        event.preventDefault();
+        console.log(1);
+        submitForm();
+    } else {
+        return false;
+    }
+})
+
+function submitForm() {
+    let words = TEXT_INPUT.value.trim();
+
+    if (words) {
+        searchMovies(words, 1);
+    }
+}
 
 CANCEL_BTN.addEventListener('click', () => {
     TEXT_INPUT.value = '';
-if(document.querySelector('.form__keyboard').style.display == 'block'){console.log(1)} else { console.log(2)};
+    TEXT_INPUT.focus();
 })
 
 SEARCH_BTN_ICON.addEventListener('click', () => {
-    let words = TEXT_INPUT.value.trim();
-
-    if(words) {
-        searchMovies(words, 1);
-    }
-    // console.log(translateWords(ред));
-    
+    submitForm();
 })
 
 SEARCH_BTN.addEventListener('click', () => {
-    // getMovieTitle(1);
+    submitForm();
 })
 
 function searchMovies(words, page) {
 
     async function translateWords() {
         const url = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20200514T063917Z.bdaba90a397d7386.03ddd58951e1548fe540cda4b3190298cb7fd4b2&text=${words}&lang=ru-en`;
-       
+
         const res = await fetch(url);
         const data = await res.json();
-        
-        return data.text[0]; 
+
+        return data.text[0];
     }
-    
+
     async function getMovie() {
         let text = await translateWords();
+        SEARCH_RESULTS.innerHTML = 'Showing results for <em><strong>'+text+'</strong></em>';
         const url = `https://www.omdbapi.com/?s=${text}&page=${page}&apikey=1cb7d65e`;
-               
+
         const res = await fetch(url);
         const data = await res.json();
-        
-        if(data.Response === 'True') {
+
+        if (data.Response === 'True') {
             let countMovie = data.Search.length;
-            let posts = [...POSTS_CONTAINER.querySelectorAll('.slider__item')];
-            
-            for (let i = 0; i < posts.length; i++) {
-                posts[i].remove();
-            }
+            // let posts = [...POSTS_CONTAINER.querySelectorAll('.slider__item')];
 
-            async function getMoviRating(imdbID) {
-                const url = `https://www.omdbapi.com/?i=${imdbID}&apikey=9b67fc54`;
-       
-                const res = await fetch(url);
-                const data = await res.json();
+            // for (let i = 0; i < posts.length; i++) {
+            //     posts[i].remove();
+            // }
+            try {
+                async function getMoviRating(imdbID) {
+                    const url = `https://www.omdbapi.com/?i=${imdbID}&apikey=9b67fc54`;
                 
-                return data.imdbRating; 
-            }
+                    const res = await fetch(url);
+                    const data = await res.json();
+                
 
-            for(let i = 0; i < countMovie; i++) {
-                let sliderItem = document.createElement('div');
-                let itemCard = document.createElement('div');
-                let cardImage = document.createElement('div');
-                let cardHeader = document.createElement('div');
-                let movieTitle = document.createElement('a');
-                let imdbRatingDiv = document.createElement('div');
-                let year = document.createElement('div');
+                    return data.imdbRating;
+                }
+            } catch(e) {
+                SEARCH_RESULTS.innerHTML = 'Request limit reached!';
+                throw e;
+            }
+            
+            for (let i = 0; i < countMovie; i++) {
+                
                 let imdbRating = await getMoviRating(data.Search[i].imdbID);
 
-                sliderItem.classList = 'slider__item';
-                itemCard.classList = 'slider__item__card card';
-                cardImage.classList = 'slider__item__card-image';
-                cardImage.style.backgroundImage = 'url('+(data.Search[i].Poster)+')';
-                cardHeader.classList = 'slider__item__card-header';
-                movieTitle.classList = 'btn btn-link';
-                movieTitle.innerHTML = data.Search[i].Title;
-                movieTitle.setAttribute('target', '_blank');
-                movieTitle.setAttribute('href', 'https://www.imdb.com/title/'+(data.Search[i].imdbID)+'/videogallery/');
-                imdbRatingDiv.classList = 'badge badge-pill badge-warning imdb-rating rounded';
-                imdbRatingDiv.innerHTML = imdbRating;
-                year.classList = 'badge badge-pill badge-info year rounded';
-                year.innerHTML = data.Search[i].Year;
-
-                POSTS_CONTAINER.append(sliderItem);
-                sliderItem.append(itemCard);
-                itemCard.append(cardImage);
-                itemCard.append(cardHeader);
-                cardHeader.append(movieTitle);
-                cardHeader.append(imdbRatingDiv);
-                cardHeader.append(year);
+                if(data.Search[i].Poster === 'N/A') {
+                    CARD_IMAGE[i].style.backgroundImage = 'url(assets/img/no-poster.png)';
+                } else {
+                    CARD_IMAGE[i].style.backgroundImage = 'url(' + (data.Search[i].Poster) + ')';
+                }
+                
+                MOVIE_TITLE[i].innerHTML = data.Search[i].Title;
+                MOVIE_TITLE[i].setAttribute('href', 'https://www.imdb.com/title/' + (data.Search[i].imdbID) + '/videogallery/');
+                IMDB_RAITING[i].innerHTML = 'IMDb: '+imdbRating;
+                MOVIE_YEAR[i].innerHTML = data.Search[i].Year;
 
             }
 
-        } else if(data.Response === 'False' && page === 1) {
-            console.log(data.Error+'нет фильмов');
-        } else {
-            console.log(data.Error+'фильмы закончились');
+        } else if (data.Response === 'False' && page === 1) {
+            console.log(data.Error + 'нет фильмов');
+        } else if(data.Response === 'False' && data.Error === 'Request limit reached!') {
+            SEARCH_RESULTS.innerHTML = 'Request limit reached!';
+        } else  {
+            console.log(data.Error + 'фильмы закончились');
         }
-        
+
     }
 
     getMovie();
-            // getMovieTitle().catch(error => {
-            //     console.log('Error: ' + error.message);
-            // })
+    // getMovieTitle().catch(error => {
+    //     console.log('Error: ' + error.message);
+    // })
 }
+
 
 
 
