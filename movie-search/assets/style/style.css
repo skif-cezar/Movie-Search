@@ -1,0 +1,275 @@
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: "Roboto", sans-serif;
+    background-color: #f06c64;
+    transition: opacity .4s;
+}
+
+h1, .header-name__title {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    padding: 10px;
+    text-transform: uppercase;
+    background-color: #2d303a;
+    border-bottom: 6px solid #323746;
+}
+
+main, header, footer {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.header-name {
+    margin: 0 auto;
+    line-height: 80px;
+}
+
+.header-name__title {
+    font-size: 24px;
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    -webkit-text-align: center;
+    text-decoration: none;
+}
+
+main {
+    flex-grow: 1;
+    border-bottom: 6px solid #d6564f;
+}
+
+.container {
+    box-sizing: border-box;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.container__form-search {
+    margin: 10px 0;
+}
+
+.container__form-search > form {
+    width: 80% !important;
+    position: relative;
+    margin-left: 40px;
+}
+
+.form__text {
+    width: calc(100% - 54px);
+    height: 42px;
+    padding: 0 0 0 52px;
+    border: 2px solid #d6564f;
+    font-size: 16px;
+    border-radius: 5px;
+    outline: none;
+    background: #F9F0DA;
+    color: #9E9C9C;
+}
+
+.form__search-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 42px;
+    height: 44px;
+    border: none;
+    background: #d6564f;
+    border-radius: 5px 0 0 5px;
+    cursor: pointer;
+}
+
+.form__search-icon:before {
+    content: "\f002";
+    font-family: FontAwesome;
+    font-size: 1em;
+    color: #F9F0DA;
+}
+
+.form__search {
+    position: absolute;
+    top: 0;
+    right: -84px;
+    width: 84px;
+    height: 46px;
+    border: none;
+    background: #d6564f;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 1em;
+    color: #F9F0DA;
+}
+
+.form__keyboard {
+    position: absolute;
+    top: 2px;
+    right: 42px;
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: #F9F0DA;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.form__keyboard:before {
+    content: "\f11c";
+    font-family: FontAwesome;
+    font-size: 2em;
+    color: #d6564f;
+}
+
+.form__cancel {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: #F9F0DA;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.form__cancel:before {
+    content: "\f00d";
+    font-family: FontAwesome;
+    font-size: 16px;
+    color: #d6564f;
+}
+
+.form__virtual-keyboard {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: .55s opacity, .55s visibility;
+    display: none;
+}
+
+.animation-show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.show {
+    display: block;
+}
+
+.container__message-container {
+    width: 100%;
+}
+
+.container__message-container__message {
+    margin: 0;
+    font-size: 1.5em;
+    color: #F9F0DA;
+    font-weight: 400;
+}
+
+footer {
+    margin: 0;
+    padding: 20px;
+    font-family: "Lato", sans-serif;
+    background-color: #2d303a;
+}
+
+.footer__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #2d303a;
+}
+
+.footer__title {
+    margin-left: 41px;
+    font-weight: 600;
+    font-size: 1em;
+    color: #666d89;
+    letter-spacing: -0.01rem;
+}
+
+.footer__github {
+    margin-right: 41px;
+}
+
+.footer__link-github {
+    font-weight: 600;
+    font-size: 1em;
+    color: #666d89;
+    letter-spacing: -0.01rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.footer__github-img {
+    padding-right: 15px;
+}
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 1023px) {
+    .form__keyboard {
+        display: none;
+    }
+
+    .form__virtual-keyboard {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .show {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width:767px){
+    .form__search {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 320px) and (max-width:479px){
+    .form__search {
+        display: none;
+    }
+
+    .footer__container {
+        justify-content: center;
+    }
+
+    .footer__github {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 319px) {
+    .form__search {
+        display: none;
+    }
+
+    .footer__container {
+        justify-content: center;
+    }
+
+    .footer__github {
+        display: none;
+    }
+}

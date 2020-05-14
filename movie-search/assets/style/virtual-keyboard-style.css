@@ -1,0 +1,73 @@
+.form__virtual-keyboard {
+    font-family: "Lato", sans-serif;
+}
+
+p {
+    font-family: "Lato", sans-serif;
+    text-align: center;
+}
+
+.description {
+    color: #ffffff;
+    margin: 0;
+}
+
+#keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto 10px auto;
+    width: 860px;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+}
+
+.language {
+    margin: 5px auto;
+    width: 150px;
+    color: rgba(0,0,0,0.7);
+    font-weight: 300;
+    font-size: 18px;
+    box-shadow: 0 0 3px -1px rgba(0,0,0,.3);
+    height: 40px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background: #fff;
+    border-bottom: 1px solid #b5b5b5;
+    line-height: 40px;
+    cursor: pointer;
+}
+
+.key-def {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 40px;
+    margin: 3px;
+    padding: 3px;
+    color: rgba(0,0,0,0.7);
+    font-weight: 300;
+    font-size: 16px;
+    box-shadow: 0 0 3px -1px rgba(0,0,0,.3);
+    border-radius: 5px;
+    box-sizing: border-box;
+    background: #fff;
+    border-bottom: 1px solid #b5b5b5;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    transition: all 0.2s ease;
+}
+
+.key-def:last-child {
+    margin-right: 40px;
+}
+
+.keypress {
+    background: rgba(0,0,0,0.1);
+}
+
+.keypress:checked {
+    background: rgba(0,0,0,0.1);
+}
