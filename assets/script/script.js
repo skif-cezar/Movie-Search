@@ -32,7 +32,7 @@ VIRTUAL_KEYBOARD.addEventListener('click', () => {
 });
 
 TEXT_INPUT.addEventListener('keydown', (event) => {
-    if(event.keyCode === 13) {
+    if (event.keyCode === 13) {
         event.preventDefault();
 
         submitForm();
@@ -42,7 +42,7 @@ TEXT_INPUT.addEventListener('keydown', (event) => {
 })
 
 CONTAINER_VK.addEventListener('mousedown', (event) => {
-    if(event.keyCode === 13) {
+    if (event.keyCode === 13) {
         event.preventDefault();
         console.log(1);
         submitForm();
@@ -85,56 +85,49 @@ function searchMovies(words, page) {
 
     async function getMovie() {
         let text = await translateWords();
-        SEARCH_RESULTS.innerHTML = 'Showing results for <em><strong>'+text+'</strong></em>';
-        const url = `https://www.omdbapi.com/?s=${text}&page=${page}&apikey=1cb7d65e`;
+        SEARCH_RESULTS.innerHTML = 'Showing results for <em><strong>' + text + '</strong></em>';
+        const url = `https://www.omdbapi.com/?s=${text}&page=${page}&apikey=aad8de66`;
 
         const res = await fetch(url);
         const data = await res.json();
 
         if (data.Response === 'True') {
             let countMovie = data.Search.length;
-            // let posts = [...POSTS_CONTAINER.querySelectorAll('.slider__item')];
 
-            // for (let i = 0; i < posts.length; i++) {
-            //     posts[i].remove();
-            // }
-            try {
-                async function getMoviRating(imdbID) {
-                    const url = `https://www.omdbapi.com/?i=${imdbID}&apikey=9b67fc54`;
-                
-                    const res = await fetch(url);
-                    const data = await res.json();
-                
+            async function getMoviRating(imdbID) {
+                const url = `https://www.omdbapi.com/?i=${imdbID}&apikey=aad8de66`;
 
-                    return data.imdbRating;
-                }
-            } catch(e) {
-                SEARCH_RESULTS.innerHTML = 'Request limit reached!';
-                throw e;
+                const res = await fetch(url);
+                const data = await res.json();
+
+
+                return data.imdbRating;
             }
-            
-            for (let i = 0; i < countMovie; i++) {
-                
-                let imdbRating = await getMoviRating(data.Search[i].imdbID);
 
-                if(data.Search[i].Poster === 'N/A') {
-                    CARD_IMAGE[i].style.backgroundImage = 'url(assets/img/no-poster.png)';
-                } else {
-                    CARD_IMAGE[i].style.backgroundImage = 'url(' + (data.Search[i].Poster) + ')';
+            try {
+                for (let i = 0; i < countMovie; i++) {
+                    let imdbRating = await getMoviRating(data.Search[i].imdbID);
+
+                    if (data.Search[i].Poster === 'N/A') {
+                        CARD_IMAGE[i].style.backgroundImage = 'url(assets/img/no-poster.png)';
+                    } else {
+                        CARD_IMAGE[i].style.backgroundImage = 'url(' + (data.Search[i].Poster) + ')';
+                    }
+
+                    MOVIE_TITLE[i].innerHTML = data.Search[i].Title;
+                    MOVIE_TITLE[i].setAttribute('href', 'https://www.imdb.com/title/' + (data.Search[i].imdbID) + '/videogallery/');
+                    IMDB_RAITING[i].innerHTML = 'IMDb: ' + imdbRating;
+                    MOVIE_YEAR[i].innerHTML = data.Search[i].Year;
                 }
-                
-                MOVIE_TITLE[i].innerHTML = data.Search[i].Title;
-                MOVIE_TITLE[i].setAttribute('href', 'https://www.imdb.com/title/' + (data.Search[i].imdbID) + '/videogallery/');
-                IMDB_RAITING[i].innerHTML = 'IMDb: '+imdbRating;
-                MOVIE_YEAR[i].innerHTML = data.Search[i].Year;
-
+            } catch (e) {
+                SEARCH_RESULTS.innerHTML = 'Request limit reached!';
             }
 
         } else if (data.Response === 'False' && page === 1) {
-            console.log(data.Error + 'нет фильмов');
-        } else if(data.Response === 'False' && data.Error === 'Request limit reached!') {
             SEARCH_RESULTS.innerHTML = 'Request limit reached!';
-        } else  {
+        } else if (data.Response === 'False' && data.Error === 'Request limit reached!') {
+            SEARCH_RESULTS.innerHTML = 'No results for' + text + '. Please, try another request';
+        } else {
             console.log(data.Error + 'фильмы закончились');
         }
 
