@@ -4,6 +4,7 @@ const VIRTUAL_KEYBOARD = document.querySelector('.form__keyboard');
 const CONTAINER_VK = document.querySelector('.form__virtual-keyboard');
 const CANCEL_BTN = document.querySelector('.form__cancel');
 const TEXT_INPUT = document.querySelector('.form__text');
+const LOADER = document.querySelector('.loading-icon');
 const SEARCH_BTN_ICON = document.querySelector('.form__search-icon');
 const SEARCH_BTN = document.querySelector('.form__search');
 const SEARCH_RESULTS = document.querySelector('.container__message-container__message');
@@ -53,6 +54,8 @@ CONTAINER_VK.addEventListener('mousedown', (event) => {
 
 function submitForm() {
     let words = TEXT_INPUT.value.trim();
+    SEARCH_RESULTS.style.display = 'none';
+    LOADER.style.display = 'block';
 
     if (words) {
         searchMovies(words, 1);
@@ -119,21 +122,26 @@ function searchMovies(words, page) {
                     IMDB_RAITING[i].innerHTML = 'IMDb: ' + imdbRating;
                     MOVIE_YEAR[i].innerHTML = data.Search[i].Year;
                 }
+                SEARCH_RESULTS.style.display = 'block';
+                LOADER.style.display = 'none';
             } catch (e) {
+                SEARCH_RESULTS.style.display = 'block';
+                LOADER.style.display = 'none';
                 SEARCH_RESULTS.innerHTML = 'Request limit reached!';
             }
             SEARCH_RESULTS.innerHTML = 'Showing results for <em><strong>' + text + '</strong></em>';
         } else if (data.Error === 'Movie not found!') {
-            SEARCH_RESULTS.innerHTML = 'No results for' + text + '. Please, try another request';
+            LOADER.style.display = 'none';
+            SEARCH_RESULTS.innerHTML = 'No results for ' + text + '. Please, try another request';
+            SEARCH_RESULTS.style.display = 'block';
         } else if (data.Response === 'False' && page === 1) {
+            LOADER.style.display = 'none';
             SEARCH_RESULTS.innerHTML = 'Request limit reached!';
+            SEARCH_RESULTS.style.display = 'block';
         } 
     }
 
     getMovie();
-    // getMovieTitle().catch(error => {
-    //     console.log('Error: ' + error.message);
-    // })
 }
 
 
